@@ -1,0 +1,43 @@
+// $Id: assignment3.mpc 378 2010-02-07 22:09:38Z hillj $
+
+project (assignment3) {
+  exename = assignment4
+  install = .
+
+  specific (make, gnuace) {
+    compile_flags += -std=c++11
+  }
+
+  Source_Files {
+  main.cpp
+    Add_Node.cpp
+    Bin_Node.cpp
+    Div_Node.cpp
+    Tree_Eval.cpp
+    Builder_Expr.cpp
+    Expr_Node.cpp
+    Node_Factory.cpp
+    Node_Visitor.cpp
+    Expr_Parser.cpp
+    Tree_Expr.cpp
+    Expr_Tree_Builder.cpp
+    Mod_Node.cpp
+    Mul_Node.cpp
+    Num_Node.cpp
+    Sub_Node.cpp
+    Tree_Factory.cpp
+    Unary_Node.cpp
+    Minus_Node.cpp
+
+  }
+
+  Template_Files {
+
+    Array.cpp
+    Stack.cpp
+
+
+  }
+
+
+}

@@ -1,0 +1,127 @@
+#----------------------------------------------------------------------------
+#       Macros
+#----------------------------------------------------------------------------
+CC            = gcc
+CXX           = g++
+LD            = $(CXX) $(CCFLAGS) $(CPPFLAGS)
+AR            = ar
+PICFLAGS      = -fPIC
+CPPFLAGS      = $(PICFLAGS) $(GENFLAGS) -std=c++11 -D_REENTRANT
+OBJEXT        = .o
+OUTPUT_OPTION = -o "$@"
+COMPILE.c     = $(CC) $(CFLAGS) $(CPPFLAGS) -c
+COMPILE.cc    = $(CXX) $(CCFLAGS) $(CPPFLAGS) -c
+LDFLAGS       = -L"."
+CCC           = $(CXX)
+MAKEFILE      = Makefile.assignment3
+DEPENDENCIES  = .depend.$(MAKEFILE)
+BTARGETDIR    = ./
+BIN           = $(BTARGETDIR)assignment4$(EXESUFFIX)$(EXEEXT)
+CAT           = cat
+MV            = mv -f
+RM            = rm -rf
+CP            = cp -p
+NUL           = /dev/null
+MKDIR         = mkdir -p
+TESTDIRSTART  = test -d
+TESTDIREND    = ||
+TOUCH         = touch
+EXEEXT        = 
+LIBPREFIX     = lib
+LIBSUFFIX     = 
+GENFLAGS      = -O
+LDLIBS        = -ldl $(subst lib,-l,$(sort $(basename $(notdir $(wildcard /usr/lib/librt.so /lib/librt.so))))) -lpthread
+OBJS          = main$(OBJEXT) Add_Node$(OBJEXT) Bin_Node$(OBJEXT) Div_Node$(OBJEXT) Tree_Eval$(OBJEXT) Builder_Expr$(OBJEXT) Expr_Node$(OBJEXT) Node_Factory$(OBJEXT) Node_Visitor$(OBJEXT) Expr_Parser$(OBJEXT) Tree_Expr$(OBJEXT) Expr_Tree_Builder$(OBJEXT) Mod_Node$(OBJEXT) Mul_Node$(OBJEXT) Num_Node$(OBJEXT) Sub_Node$(OBJEXT) Tree_Factory$(OBJEXT) Unary_Node$(OBJEXT) Minus_Node$(OBJEXT)
+SRC           = main.cpp Add_Node.cpp Bin_Node.cpp Div_Node.cpp Tree_Eval.cpp Builder_Expr.cpp Expr_Node.cpp Node_Factory.cpp Node_Visitor.cpp Expr_Parser.cpp Tree_Expr.cpp Expr_Tree_Builder.cpp Mod_Node.cpp Mul_Node.cpp Num_Node.cpp Sub_Node.cpp Tree_Factory.cpp Unary_Node.cpp Minus_Node.cpp
+LINK.cc       = $(LD) $(LDFLAGS)
+EXPORTFLAGS   = 
+DEPLIBS       = $(foreach lib, , $(foreach libpath, ., $(wildcard $(libpath)/lib$(lib).a)))
+
+#----------------------------------------------------------------------------
+#       Local targets
+#----------------------------------------------------------------------------
+
+all: $(BIN)
+
+$(BIN): $(OBJS) $(DEPLIBS)
+	@$(TESTDIRSTART) "$(BTARGETDIR)" $(TESTDIREND) $(MKDIR) "$(BTARGETDIR)"
+	$(LINK.cc) $(OBJS) $(LDLIBS) $(OUTPUT_OPTION)
+
+generated: $(GENERATED_DIRTY)
+	@-:
+
+main$(OBJEXT): main.cpp
+	$(COMPILE.cc) $(EXPORTFLAGS) $(OUTPUT_OPTION) main.cpp
+
+Add_Node$(OBJEXT): Add_Node.cpp
+	$(COMPILE.cc) $(EXPORTFLAGS) $(OUTPUT_OPTION) Add_Node.cpp
+
+Bin_Node$(OBJEXT): Bin_Node.cpp
+	$(COMPILE.cc) $(EXPORTFLAGS) $(OUTPUT_OPTION) Bin_Node.cpp
+
+Div_Node$(OBJEXT): Div_Node.cpp
+	$(COMPILE.cc) $(EXPORTFLAGS) $(OUTPUT_OPTION) Div_Node.cpp
+
+Tree_Eval$(OBJEXT): Tree_Eval.cpp
+	$(COMPILE.cc) $(EXPORTFLAGS) $(OUTPUT_OPTION) Tree_Eval.cpp
+
+Builder_Expr$(OBJEXT): Builder_Expr.cpp
+	$(COMPILE.cc) $(EXPORTFLAGS) $(OUTPUT_OPTION) Builder_Expr.cpp
+
+Expr_Node$(OBJEXT): Expr_Node.cpp
+	$(COMPILE.cc) $(EXPORTFLAGS) $(OUTPUT_OPTION) Expr_Node.cpp
+
+Node_Factory$(OBJEXT): Node_Factory.cpp
+	$(COMPILE.cc) $(EXPORTFLAGS) $(OUTPUT_OPTION) Node_Factory.cpp
+
+Node_Visitor$(OBJEXT): Node_Visitor.cpp
+	$(COMPILE.cc) $(EXPORTFLAGS) $(OUTPUT_OPTION) Node_Visitor.cpp
+
+Expr_Parser$(OBJEXT): Expr_Parser.cpp
+	$(COMPILE.cc) $(EXPORTFLAGS) $(OUTPUT_OPTION) Expr_Parser.cpp
+
+Tree_Expr$(OBJEXT): Tree_Expr.cpp
+	$(COMPILE.cc) $(EXPORTFLAGS) $(OUTPUT_OPTION) Tree_Expr.cpp
+
+Expr_Tree_Builder$(OBJEXT): Expr_Tree_Builder.cpp
+	$(COMPILE.cc) $(EXPORTFLAGS) $(OUTPUT_OPTION) Expr_Tree_Builder.cpp
+
+Mod_Node$(OBJEXT): Mod_Node.cpp
+	$(COMPILE.cc) $(EXPORTFLAGS) $(OUTPUT_OPTION) Mod_Node.cpp
+
+Mul_Node$(OBJEXT): Mul_Node.cpp
+	$(COMPILE.cc) $(EXPORTFLAGS) $(OUTPUT_OPTION) Mul_Node.cpp
+
+Num_Node$(OBJEXT): Num_Node.cpp
+	$(COMPILE.cc) $(EXPORTFLAGS) $(OUTPUT_OPTION) Num_Node.cpp
+
+Sub_Node$(OBJEXT): Sub_Node.cpp
+	$(COMPILE.cc) $(EXPORTFLAGS) $(OUTPUT_OPTION) Sub_Node.cpp
+
+Tree_Factory$(OBJEXT): Tree_Factory.cpp
+	$(COMPILE.cc) $(EXPORTFLAGS) $(OUTPUT_OPTION) Tree_Factory.cpp
+
+Unary_Node$(OBJEXT): Unary_Node.cpp
+	$(COMPILE.cc) $(EXPORTFLAGS) $(OUTPUT_OPTION) Unary_Node.cpp
+
+Minus_Node$(OBJEXT): Minus_Node.cpp
+	$(COMPILE.cc) $(EXPORTFLAGS) $(OUTPUT_OPTION) Minus_Node.cpp
+
+clean:
+	-$(RM) $(OBJS)
+
+realclean: clean
+	-$(RM) $(BIN)
+
+check-syntax:
+	$(COMPILE.cc) $(EXPORTFLAGS) -Wall -Wextra -pedantic -fsyntax-only $(CHK_SOURCES)
+
+#----------------------------------------------------------------------------
+#       Dependencies
+#----------------------------------------------------------------------------
+
+
+depend:
+	-$(MPC_ROOT)/depgen.pl  $(CFLAGS) $(CCFLAGS) $(CPPFLAGS) -f $(DEPENDENCIES) $(SRC) 2> $(NUL)
+
+-include $(DEPENDENCIES)
